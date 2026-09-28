@@ -41,31 +41,11 @@ Optional: `pytest` (tests), `matplotlib` (plotting), `torch` (the
 differentiable layer `zztop.zigzagdiff` and tensor output of the vectorizers):
 `pip install -e ".[all,torch]"`.
 
-### Installing with GPU support
+The standard GUDHI release is the supported configuration.  An optional GPU
+path for batched static cubical persistence exists in the code; it needs a
+CUDA extension of GUDHI that is not publicly available yet, and without it
+every function runs on the CPU (see below).
 
-The GPU-accelerated persistence path requires the
-[GUDHI GPU fork](https://github.com/matteobiagetti/gudhi-devel/tree/gpu-cubical-personal-20260226)
-compiled with CUDA for your GPU architecture.
-
-**Follow the installation instructions in the
-[gudhi-devel GPU branch README](https://github.com/matteobiagetti/gudhi-devel/tree/gpu-cubical-personal-20260226)**
-to build and install the CUDA extension.  The GUDHI installation is kept
-external to zztop to avoid complicating the install process.
-
-Once the GPU-enabled GUDHI is installed, install zztop as usual:
-
-```bash
-pip install -e ".[all]"
-```
-
-Verify the GPU path is working:
-
-```python
-from zztop import gpu_available, gpu_supports_3d
-
-print(gpu_available())      # True
-print(gpu_supports_3d())    # True
-```
 
 ## Quick start
 
@@ -119,85 +99,37 @@ interest (e.g. remove the medial wall) with `vertex_mask`.  See
 [docs/mesh_zigzag_design.md](docs/mesh_zigzag_design.md) for the full
 construction and its guarantees.
 
-### GPU-accelerated per-frame persistence (learning pipelines)
+### Batched per-frame (static) persistence
 
-For learning pipelines you often need standard (non-zigzag) persistence
-diagrams computed independently for each frame, as fast as possible.
-`run_cubical_persistence_gpu` auto-dispatches to the GPU when using the
-[GUDHI GPU fork](https://github.com/matteobiagetti/gudhi-devel/tree/gpu-cubical-personal-20260226),
-falling back seamlessly to CPU when running with standard GUDHI:
+Learning pipelines often need ordinary, non-zigzag persistence diagrams
+computed independently for each frame.  `run_cubical_persistence_gpu` does
+this for a batch of frames with GUDHI's `CubicalComplex`; despite its name it
+runs on the CPU with the standard GUDHI release, and only dispatches to a GPU
+when an optional CUDA extension of GUDHI (not publicly available yet) is
+installed:
 
 ```python
-from zztop import run_cubical_persistence_gpu, gpu_available, gpu_supports_3d
+from zztop import run_cubical_persistence_gpu, gpu_available
 
-print(f"GPU available: {gpu_available()}")
-print(f"3D GPU supported: {gpu_supports_3d()}")
+print(gpu_available())                                   # False with standard GUDHI
 
-# 2D grids — shape (H, W, n_frames)
-diagrams_2d = run_cubical_persistence_gpu(grid_2d, backend="auto")
-
-# 3D volumes — shape (H, W, D, n_frames)
-diagrams_3d = run_cubical_persistence_gpu(grid_3d, backend="auto")
-
-# Each entry: diagrams[t][dim] → ndarray(n_bars, 2)
+diagrams_2d = run_cubical_persistence_gpu(grid_2d, backend="auto")   # (H, W, n_frames)
+diagrams_3d = run_cubical_persistence_gpu(grid_3d, backend="auto")   # (H, W, D, n_frames)
+# diagrams[t][dim] -> ndarray(n_bars, 2)
 ```
-
-#### Backend selection
 
 | `backend=` | Behaviour |
 |---|---|
-| `"auto"` (default) | GPU for batches (n_frames > 1) when available, otherwise CPU. Single-frame inputs always use CPU because kernel-launch overhead dominates. |
-| `"gpu"` | Force GPU. Raises `RuntimeError` if GPU extension is missing. |
-| `"cpu"` | Force CPU via GUDHI `CubicalComplex`. |
+| `"auto"` (default) | the GPU extension when present and `n_frames > 1`, otherwise CPU |
+| `"cpu"` | GUDHI `CubicalComplex`, one frame at a time |
+| `"gpu"` | the GPU extension; raises `RuntimeError` when it is not installed |
 
-```python
-# Force GPU
-diagrams = run_cubical_persistence_gpu(grid_data, backend="gpu")
-
-# Force CPU
-diagrams = run_cubical_persistence_gpu(grid_data, backend="cpu")
-```
-
-#### 3D GPU persistence
-
-The GUDHI GPU fork (branch `gpu-cubical-personal-20260226`) includes CUDA
-kernels for both **2D** and **3D** cubical persistence.  When 3D kernels are
-available, `run_cubical_persistence_gpu` handles 3D volumes
-(shape `(H, W, D, n_frames)`) on the GPU automatically.
-
-For 3D grids with `input_type="vertices"` (the default), the GPU path
-internally converts vertex filtration values to top-dimensional cells via
-`_vertices_to_top_cells_3d` (max of 8 corner vertices per voxel).  The CPU
-fallback applies the **same conversion** so that `backend="cpu"` and
-`backend="gpu"` produce identical diagrams.
-
-> **Note:** This top-cells conversion means 3D persistence is computed on a
-> reduced `(H-1, W-1, D-1)` complex rather than the full `(2H-1, 2W-1, 2D-1)`
-> bitmap.  The 2D path uses the full bitmap and does not have this reduction.
-
-**Benchmark** (15×15×10 neural grid, 300 frames, A100 GPU):
-
-| | 20 frames | 300 frames |
-|---|---|---|
-| CPU | 1.73 s | 1.71 s |
-| GPU | 0.13 s | 0.24 s |
-| **Speedup** | **13.6×** | **7.1×** |
-
-There is also an sklearn-compatible wrapper that uses the fork's
-`CubicalPersistence(backend="gpu")` transformer:
-
-```python
-from zztop import run_cubical_persistence_sklearn
-
-# Returns list of arrays in sklearn CubicalPersistence format
-result = run_cubical_persistence_sklearn(
-    grid_data, homology_dimensions=(0, 1), backend="auto"
-)
-```
-
-> **Hardware:** See [Installing with GPU support](#installing-with-gpu-support)
-> for how to build the CUDA extension for your GPU.  The default build targets
-> V100 (sm_70), A100 (sm_80), and H100 (sm_90).
+For 3-D grids with `input_type="vertices"` (the default) the vertex values are
+first converted to top-dimensional cells (maximum of the eight corners of each
+voxel), so persistence is computed on the reduced `(H-1, W-1, D-1)` complex;
+the 2-D path uses the full bitmap.  `run_cubical_persistence_sklearn` wraps
+`gudhi.sklearn.cubical_persistence.CubicalPersistence` with the same
+conventions.
 
 ### Differentiable zigzag (`zztop.zigzagdiff`)
 
@@ -504,20 +436,6 @@ pip install -e ".[test]"
 python3 -m pytest tests/ -v
 ```
 
-### GPU tests on a Slurm cluster
-
-The GPU parity tests (verifying GPU and CPU produce identical diagrams) are
-skipped on machines without a GPU.  To run them on a GPU node:
-
-```bash
-sbatch scripts/run_gpu_tests.sbatch
-```
-
-The included sbatch script activates a conda environment with the GPU-enabled
-GUDHI fork, installs zztop, and runs the full test suite.  **Edit the script**
-to match your cluster's partition names, GPU types, conda paths, and module
-loads before submitting.
-
 The test suite covers:
 
 - **Complexes** — Simplex/CubicalCell construction, boundary, closure
@@ -528,7 +446,7 @@ The test suite covers:
 - **Mesh zigzag** — closure invariant (all reducers), excursion-set equivalence, disk/annulus/sphere homology, `vertex_mask`
 - **Parity** — Betti numbers match between native cubical and triangulated-simplicial pipelines
 - **Parity with fzz** — the campaign that compared the engine with the reference C++ implementation before its removal is documented in [docs/parity_with_fzz.md](docs/parity_with_fzz.md)
-- **GPU cubical** — Detection, CPU fallback, GPU ↔ CPU parity (on GPU nodes)
+- **Batched static persistence** — detection of the optional GPU extension, the CPU path, GPU/CPU parity (skipped without the extension)
 - **Dionysus** — Optional parity check (skipped if Dionysus not installed)
 
 ## Algorithm reference

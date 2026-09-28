@@ -56,6 +56,15 @@ All notable changes to this project will be documented in this file.
   `ZigzagEngine.backend_name` is always `"python"`.
 - Packaging: no build-time dependency on `pybind11`, no compilation step;
   `setup.py` is a stub and `pyproject.toml` carries the metadata.
+- The standard GUDHI release is the supported configuration.  The batched
+  static-persistence functions (`run_cubical_persistence_gpu`,
+  `run_cubical_persistence_sklearn`) keep their GPU dispatch, but the CUDA
+  extension of GUDHI they can use is not publicly available; without it they
+  run on the CPU, and the documentation now says so instead of linking to a
+  private fork.  Verified under GUDHI 3.13: the full suite passes with the
+  GPU-parity tests skipped.
+- The cluster-specific scripts under `scripts/` (GPU-fork rebuild and test
+  jobs, a data-processing batch job) were removed.
 
 ### Fixed
 - **Wrong cone dimension for cubical (abstract) cells** — affects every

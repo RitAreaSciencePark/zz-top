@@ -26,7 +26,7 @@ death, dimension)` triples), so results are directly comparable with it.
 | component | use | licence |
 |---|---|---|
 | numpy, scipy, scikit-learn | runtime | BSD-3-Clause |
-| GUDHI | `CubicalComplex`, `SimplexTree`, `gudhi.sklearn.cubical_persistence` (cell extraction, flag expansion, static persistence); an optional CUDA-enabled fork for the GPU path | MIT for the modules used (GUDHI's CGAL-dependent modules are GPL v3 and are not used) |
+| GUDHI | `CubicalComplex`, `SimplexTree`, `gudhi.sklearn.cubical_persistence` (cell extraction, flag expansion, static persistence); optionally a CUDA extension of GUDHI for the GPU path (not publicly available) | MIT for the modules used (GUDHI's CGAL-dependent modules are GPL v3 and are not used) |
 | PyTorch | optional: `zztop.zigzagdiff` and `vectorizations._torch` | BSD-3-Clause |
 | matplotlib | optional: plotting | PSF-based licence |
 | Dionysus 2 | optional: parity tests only | BSD-3-Clause |

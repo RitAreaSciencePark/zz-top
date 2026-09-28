@@ -309,11 +309,11 @@ def run_cubical_zigzag(
     threshold : float
         Activation threshold for cells.
     use_gudhi : bool
-        Use GUDHI for cell extraction.  Works with both standard GUDHI and
-        the GPU-enabled fork (``gpu-cubical-personal-20260226``).
+        Use GUDHI for cell extraction (the standard GUDHI release; the
+        optional GPU extension is not needed here).
     backend : str
         Zigzag engine backend: ``'auto'`` or ``'python'`` (the same engine).
-        (This selects the *zigzag* solver, not the GUDHI GPU backend.)
+        (This selects the zigzag engine, not GUDHI's cell extraction.)
     output_file : str, optional
         CSV path to write the barcode to.
 

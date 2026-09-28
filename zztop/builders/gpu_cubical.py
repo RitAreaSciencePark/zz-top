@@ -1,11 +1,12 @@
 """
 GPU-accelerated **static** cubical persistence for batched frames.
 
-This module provides a bridge between zztop and the GPU cubical persistence
-backend available in the `GUDHI GPU fork
-<https://github.com/matteobiagetti/gudhi-devel>`_.  It computes **standard
-(non-zigzag) persistence diagrams** independently for each frame in a batch,
-optionally using GPU acceleration when available.
+This module computes **standard (non-zigzag) persistence diagrams**
+independently for each frame in a batch.  With the standard GUDHI release it
+runs on the CPU (``CubicalComplex`` per frame).  It also knows how to dispatch
+to an optional CUDA extension of GUDHI (``gudhi._pers_cub_low_dim_gpu_ext``),
+which is not part of the public GUDHI release; when that extension is absent
+every entry point falls back to the CPU and ``backend="gpu"`` raises.
 
 For *zigzag* persistence across frames, use :func:`run_cubical_zigzag`
 instead — that path is inherently sequential and is handled by the zztop
@@ -367,7 +368,7 @@ def run_cubical_persistence_gpu(
         if not gpu_available():
             raise RuntimeError(
                 "GPU backend requested but gudhi._pers_cub_low_dim_gpu_ext "
-                "is not available.  Install the GPU-enabled GUDHI fork."
+                "is not available (it is an optional CUDA extension of GUDHI)."
             )
         if ndim == 2:
             use_gpu = True
@@ -482,7 +483,7 @@ def run_cubical_persistence_sklearn(
 
     This is a thin convenience wrapper around
     :class:`gudhi.sklearn.cubical_persistence.CubicalPersistence` — useful
-    when the GPU fork is installed and you want the familiar sklearn
+    when you want the familiar sklearn
     ``fit_transform`` pipeline with GPU dispatch.
 
     Parameters
@@ -494,7 +495,8 @@ def run_cubical_persistence_sklearn(
     min_persistence : float
         Minimum bar length.
     backend : str
-        Passed directly to ``CubicalPersistence(backend=...)``.
+        Passed to ``CubicalPersistence(backend=...)`` when the installed
+        GUDHI accepts it (the optional GPU extension); ignored otherwise.
     input_type : str
         ``'vertices'`` or ``'top_dimensional_cells'``.
     negate : bool
@@ -520,7 +522,7 @@ def run_cubical_persistence_sklearn(
     # Build list of per-frame grids (what sklearn expects as X)
     X = [grid_data[slicing_prefix + (t,)] for t in range(n_frames)]
 
-    # The 'backend' parameter is only available in the GPU fork.
+    # The 'backend' parameter exists only in the optional GPU extension.
     # Standard GUDHI does not accept it, so we only pass it when
     # the constructor supports it.
     init_params = inspect.signature(CubicalPersistence.__init__).parameters
