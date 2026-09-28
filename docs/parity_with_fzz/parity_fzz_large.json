@@ -1,0 +1,80 @@
+{
+ "LARGE knn point clouds": {
+  "cases": 6,
+  "mismatch": 0,
+  "gt_checked": 0,
+  "gt_fail": 0,
+  "ops": 101714,
+  "max_ops": 21132,
+  "bars": 50857,
+  "essential": 3039,
+  "t_py": 8.432712320936844,
+  "t_cpp": 0.8791266020853072,
+  "examples": []
+ },
+ "LARGE cubical 3-D": {
+  "cases": 5,
+  "mismatch": 0,
+  "gt_checked": 0,
+  "gt_fail": 0,
+  "ops": 22388,
+  "max_ops": 5222,
+  "bars": 11194,
+  "essential": 2959,
+  "t_py": 0.6591762619791552,
+  "t_cpp": 0.25832470797467977,
+  "examples": []
+ },
+ "LARGE cubical 2-D": {
+  "cases": 5,
+  "mismatch": 0,
+  "gt_checked": 0,
+  "gt_fail": 0,
+  "ops": 33070,
+  "max_ops": 7662,
+  "bars": 16535,
+  "essential": 6089,
+  "t_py": 0.6414586550090462,
+  "t_cpp": 0.36110758292488754,
+  "examples": []
+ },
+ "LARGE torus mesh": {
+  "cases": 4,
+  "mismatch": 0,
+  "gt_checked": 0,
+  "gt_fail": 0,
+  "ops": 20374,
+  "max_ops": 6582,
+  "bars": 10187,
+  "essential": 2477,
+  "t_py": 0.5915080601116642,
+  "t_cpp": 0.2966433559777215,
+  "examples": []
+ },
+ "LARGE simplicial lower-star, dim<=3": {
+  "cases": 4,
+  "mismatch": 0,
+  "gt_checked": 0,
+  "gt_fail": 0,
+  "ops": 8046,
+  "max_ops": 2398,
+  "bars": 4023,
+  "essential": 265,
+  "t_py": 0.1798314310144633,
+  "t_cpp": 0.02554052893538028,
+  "examples": []
+ },
+ "LARGE zigzagdiff stream": {
+  "cases": 5,
+  "mismatch": 0,
+  "gt_checked": 0,
+  "gt_fail": 0,
+  "ops": 17128,
+  "max_ops": 4076,
+  "bars": 8615,
+  "essential": 0,
+  "t_py": 0.2978629028657451,
+  "t_cpp": 0.026261972030624747,
+  "examples": []
+ }
+}
