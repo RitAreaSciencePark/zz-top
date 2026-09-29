@@ -16,7 +16,7 @@ optimisation.
 | **Cubical zigzag** | Grid data → native cubical cells → zigzag barcode (no triangulation) |
 | **Mesh zigzag** | Scalar field on a fixed triangulated surface (e.g. FreeSurfer cortex) → co-active sub-complex → zigzag barcode |
 | **Differentiable zigzag** | `zztop.zigzagdiff`: bar endpoints as interpolated crossing times of an evolving filtering function, exact pairing, gradients through PyTorch autograd |
-| **Pure-Python engine** | Independent implementation of the Dey–Hou algorithm over GF(2); no compiler, no vendored third-party code |
+| **Pure-Python engine** | Python implementation of the Dey–Hou algorithm over GF(2); |
 | **Arbitrary dimension** | Works on 2-D grids, 3-D volumes, or higher |
 
 ## Installation
