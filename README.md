@@ -432,7 +432,7 @@ The test suite covers:
 - **Differentiable zigzag** — closure after every event, pairing equal to the integer engine, deletion-death regression, finite-difference checks of the gradient with respect to values, parameters and threshold, phantom-pair and tie rules, boundary conventions (requires `torch`)
 - **Mesh zigzag** — closure invariant (all reducers), excursion-set equivalence, disk/annulus/sphere homology, `vertex_mask`
 - **Parity** — Betti numbers match between native cubical and triangulated-simplicial pipelines
-- **Parity with fzz** — the campaign that compared the engine with the reference C++ implementation before its removal is documented in [docs/parity_with_fzz.md](docs/parity_with_fzz.md)
+- **Parity with fzz** — comparison of the engine with the reference C++ implementation.
 - **Batched static persistence** — detection of the optional GPU extension, the CPU path, GPU/CPU parity (skipped without the extension)
 - **Dionysus** — Optional parity check (skipped if Dionysus not installed)
 
