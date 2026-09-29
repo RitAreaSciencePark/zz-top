@@ -5,7 +5,7 @@ Thank you for your interest in contributing!
 ## Development setup
 
 ```bash
-git clone https://github.com/matteobiagetti/zz-top.git
+git clone https://github.com/RitAreaSciencePark/zz-top.git
 cd zztop
 pip install -e ".[all]"
 ```

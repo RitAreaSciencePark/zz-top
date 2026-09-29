@@ -65,6 +65,8 @@ All notable changes to this project will be documented in this file.
   GPU-parity tests skipped.
 - The cluster-specific scripts under `scripts/` (GPU-fork rebuild and test
   jobs, a data-processing batch job) were removed.
+- `CITATION.cff` and a *Citing* section in the README; project URLs point to
+  the public repository.
 
 ### Fixed
 - **Wrong cone dimension for cubical (abstract) cells** — affects every

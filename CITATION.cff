@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: >-
+  If you use zz-top in your work, please cite the paper below (preferred) and,
+  if you refer to the software itself, this repository.
+type: software
+title: "zz-top: zigzag persistence with a differentiable read-out"
+version: 0.8.0
+date-released: 2026-09-28
+license: BSD-3-Clause
+repository-code: https://github.com/RitAreaSciencePark/zz-top
+authors:
+  - family-names: Biagetti
+    given-names: Matteo
+  # ADD CO-AUTHORS HERE (one entry each: family-names / given-names / affiliation / orcid)
+preferred-citation:
+  type: article
+  title: "A Differentiability Framework for Zigzag Persistent Homology via Linear Interpolation"
+  authors:
+    - family-names: Biagetti
+      given-names: Matteo
+    # ADD CO-AUTHORS HERE, in the paper's order
+  year: 2026
+  journal: arXiv preprint
+  # FILL IN once the preprint is out:
+  # identifiers:
+  #   - type: other
+  #     value: arXiv:XXXX.XXXXX
+  # url: https://arxiv.org/abs/XXXX.XXXXX

@@ -34,9 +34,9 @@ torch = ["torch>=1.9"]
 all = ["zztop[test,plot]"]
 
 [project.urls]
-Homepage = "https://github.com/matteobiagetti/zz-top"
-Repository = "https://github.com/matteobiagetti/zz-top"
-Issues = "https://github.com/matteobiagetti/zz-top/issues"
+Homepage = "https://github.com/RitAreaSciencePark/zz-top"
+Repository = "https://github.com/RitAreaSciencePark/zz-top"
+Issues = "https://github.com/RitAreaSciencePark/zz-top/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

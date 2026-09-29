@@ -436,6 +436,21 @@ The test suite covers:
 - **Batched static persistence** — detection of the optional GPU extension, the CPU path, GPU/CPU parity (skipped without the extension)
 - **Dionysus** — Optional parity check (skipped if Dionysus not installed)
 
+## Citing
+
+If you use this package, please cite the paper that introduces the
+differentiable read-out (GitHub's "Cite this repository" button gives the same
+entry, from `CITATION.cff`):
+
+```bibtex
+@article{zztop2026,
+  title   = {A Differentiability Framework for Zigzag Persistent Homology via Linear Interpolation},
+  author  = {Biagetti, Matteo and CO-AUTHORS},
+  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  year    = {2026}
+}
+```
+
 ## Algorithm reference
 
 > T. K. Dey and T. Hou.
