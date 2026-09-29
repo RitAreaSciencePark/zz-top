@@ -3,7 +3,7 @@
 **zz-top** computes zigzag persistent homology for both **simplicial** and
 **cubical** complexes through a single, self-contained Python package.
 
-Its engine is an independent, pure-Python implementation of the Dey–Hou fast
+Its engine is a pure-Python implementation of the Dey–Hou fast
 zigzag algorithm (ESA 2022): the zigzag filtration is converted into a standard
 filtration by coning off deletions and reduced over GF(2) with the twist
 optimisation.
@@ -253,16 +253,6 @@ You can also write the barcode to CSV:
 ```python
 bars = run_cubical_zigzag(grid_data, output_file="barcode.csv")
 ```
-
-## The engine
-
-`ZigzagEngine` has a single, pure-Python implementation.  Its `backend`
-argument is kept for compatibility with earlier releases and accepts
-`"auto"` or `"python"` (both the same); `engine.backend_name` is always
-`"python"`.  Earlier releases also shipped a C++ backend built on the
-authors' `fzz` code; it was removed in 0.8.0 for licensing reasons after a
-parity campaign showed identical output
-([docs/parity_with_fzz.md](docs/parity_with_fzz.md)).
 
 ## Package structure
 
