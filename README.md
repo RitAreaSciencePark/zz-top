@@ -6,10 +6,7 @@
 Its engine is an independent, pure-Python implementation of the Dey–Hou fast
 zigzag algorithm (ESA 2022): the zigzag filtration is converted into a standard
 filtration by coning off deletions and reduced over GF(2) with the twist
-optimisation.  The authors' reference implementation, `fzz`, is not
-redistributed here (its terms restrict it to academic use); the engine's
-output was verified bar-for-bar against it before the vendored copy was
-removed ([docs/parity_with_fzz.md](docs/parity_with_fzz.md)).
+optimisation.
 
 ## Features
 
